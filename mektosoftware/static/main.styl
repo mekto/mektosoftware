@@ -1,0 +1,148 @@
+@import url('http://fonts.googleapis.com/css?family=Antic+Slab');
+
+@import "modular-scale.styl"
+@import "-prefix-free.styl"
+
+base-size = 18px
+base-line-height = 32px
+base-color = #222
+
+ms(increment)
+  return golden-ratio(base-size, increment)
+
+lh(font-size)
+  return ceil(font-size / base-line-height) * base-line-height
+
+* { box-sizing: border-box; }
+
+html { font-size: 62.5%; }
+
+body {
+  font-family: Georgia, serif
+  font-size: base-size
+  line-height: base-line-height
+  color: base-color
+  // background: url('http://twitter.github.com/bootstrap/assets/img/grid-18px-masked.png') repeat-x;
+  // background-image: -webkit-linear-gradient(rgba(#eee,.2) 2px, transparent 2px), -webkit-linear-gradient(0, rgba(#eee,.1) 2px, transparent 2px), -webkit-linear-gradient(rgba(#eee,.3) 1px, transparent 1px), -webkit-linear-gradient(0, rgba(#eee,.3) 1px, transparent 1px)
+  // background-size: 160px 160px, 160px 160px, 16px 16px, 16px 16px
+  // background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
+
+a {
+  border-bottom: 1px dotted
+  color: base-color
+  line-height: inherit
+  text-decoration: none
+  transition: background-color .15s ease-in
+
+  &:hover { background-color: #ffa; }
+  &:visited { color: @color; }
+  &:focus { border-color: #f33; }
+}
+
+time { font-style: italic; color: #555; font-size: 14px; }
+p.back { font-size: 13px; font-style: italic; }
+p.back a { border-bottom: 0 none; }
+
+
+html, body, div, p, h1, h2, h3, ul, ol {
+  font-size: base-font-size
+  margin: 0
+  padding: 0
+  vertical-align: baseline
+}
+
+p {
+  font-size: base-font-size
+  line-height: base-line-height
+  margin-bottom: base-line-height
+}
+
+ul, ol {
+  margin-bottom: base-line-height
+  margin-left: base-line-height
+}
+
+h1, h2, h3 {
+  text-rendering: optimizeLegibility
+  margin-bottom: base-line-height
+  margin-top: base-line-height
+
+  small { font-size: 60%; color: #888; line-height: 0; }
+}
+
+h1 { font-size: ms(2); line-height: lh(@font-size); margin-bottom: 0 * base-line-height; margin-top: 1 * base-line-height; font-weight: normal; }
+h2 { font-size: ms(1); line-height: lh(@font-size); margin-bottom: base-line-height; }
+h1 + p { margin-bottom: 1 * base-line-height; }
+
+.container {
+  margin: 0 auto
+  padding: 0
+  max-width: 650px
+}
+
+#brand {
+  @extends .container
+  font-family: 'Courier New', courier;
+  font-size: ms(1)
+  font-weight: normal
+  line-height: lh(@font-size)
+  margin-top: 1.5 * base-line-height
+  text-align: center
+  color: #aaa
+
+  span { color: #333; }
+}
+
+#intro {
+  @extends .container
+  margin-top: 1.5 * base-line-height
+  font-size: 16px
+  font-style: italic
+  padding: 18px
+  border-top: 1px dotted #bbb
+  border-bottom: @border-top
+
+  p:last-child { margin-bottom: 0; }
+  u { font-weight: normal; text-decoration: none; font-weight: normal; color: #888; }
+}
+
+#about {
+  margin: (2 * base-line-height) 0
+  font-style: italic
+  font-size: 16px
+  border-top: 1px dotted #aaa
+  padding: 18px
+
+  p:last-child { margin-bottom: 0; }
+}
+
+.avatar {
+  background: #fff url('gfx/avatar.gif') no-repeat
+  border: 1px solid 000
+  border-radius: 100px
+  box-shadow: inset 0 0 5px 2px rgba(#000, .5)
+  height: 96px
+  width: 96px
+  float: left;
+  margin-right: base-line-height
+}
+
+#post-list
+  @extends .container
+  margin: 1.5 * base-line-height auto
+
+  p
+    margin-bottom: 0
+    margin-left: 128px + 18px
+
+  a
+    border-bottom: 0 none
+
+  small
+    font-size: 60%
+    color: #999
+    font-style: italic
+    float: left
+    width: 108px
+    margin-left: - @width

@@ -1,0 +1,7 @@
+{% macro include_video(url, title=None) %}
+  {% set url_data = url|parse_video_url %}
+  {% if url_data.service == 'vimeo.com' %}
+  <iframe src="http://player.vimeo.com/video/{{ url_data.video_id }}" width="650" height="365" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  {% endif %}
+  {% if title %}<p><a href="{{ url }}" target="_blank">{{ title }}</a></p>{% endif %}
+{% endmacro %}

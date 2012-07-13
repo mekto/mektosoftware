@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>MektoSoftware</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+  {% block body %}
+  <p id="brand">
+    <span>Mekto</span>Software
+  </p>
+  <div id="intro">
+    <div class="avatar"></div>
+
+    <p>Nazywam się <a href=""><strong>Tomasz Krzyszczyk</strong></a> i jestem <strong>programistą</strong> od zadań specjalnych.
+      Potrzebujesz <u>aplikacji</u>, która usprawni pracę <u>w&nbsp;Twojej firmie</u>? Super, dobrze trafiłeś!</p>
+  </div>
+  <div id="post-list">
+    {% for post in posts %}
+    <p>
+      <small>{{ post.published_on }}</small>
+      <a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a>
+    </p>
+    {% endfor %}
+  </div>
+  {% endblock %}
+</body>
+</html>

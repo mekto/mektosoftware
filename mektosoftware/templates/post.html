@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<div class="container">
+  <p class="back"><a href="/">← Wróć do listy wpisów</a></p>
+  <header>
+    <h1>{{ post.title }}</h1>
+    <p><time>{{ post.published_on|format_date }}</time></p>
+  </header>
+
+  <article>
+    {% include post.path %}
+  </article>
+
+  <footer id="about">
+    <div class="avatar"></div>
+
+    <p><a href=""><strong>Tomasz Krzyszczyk</strong></a> — programista, freelancer specjalizujący się w tworzeniu
+      aplikacji internetowych oraz projektowaniu funkcjonalnych interfejsów użytkownika.</p>
+  </footer>
+</div>
+{% endblock %}
