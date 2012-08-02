@@ -61,6 +61,8 @@ def find_posts():
         published_on = datetime.strptime(template.module.published_on, '%Y-%m-%d').date()
         posts.append(Post(title=template.module.title, slug=path[6:-5], published_on=published_on, path=path))
 
+    posts.sort(key=lambda post: post.published_on, reverse=True)
+
 
 if app.debug:
     app.before_request(find_posts)
