@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, date
 from urlparse import urlparse
 
 from flask import Flask, render_template, abort
@@ -58,7 +58,7 @@ def find_posts():
 
     for path in app.jinja_env.list_templates(filter_func=lambda t: t.startswith('posts/') and t.endswith('.html')):
         template = app.jinja_env.get_template(path)
-        published_on = datetime.strptime(template.module.published_on, '%Y-%m-%d').date()
+        published_on = datetime.strptime(getattr(template.module, 'published_on', str(date.today())), '%Y-%m-%d').date()
         posts.append(Post(title=template.module.title, slug=path[6:-5], published_on=published_on, path=path))
 
     posts.sort(key=lambda post: post.published_on, reverse=True)
