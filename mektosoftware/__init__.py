@@ -11,7 +11,7 @@ app.config.from_object(__name__ + '.config')
 
 @app.template_filter('markdown')
 def markdown_filter(s):
-    return markdown(s)
+    return markdown(s, extensions=['codehilite(guess_lang=False)'])
 
 @app.template_filter('parse_video_url')
 def parse_video_url_filter(url):

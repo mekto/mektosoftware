@@ -45,7 +45,7 @@ p.back { font-size: 13px; font-style: italic; }
 p.back a { border-bottom: 0 none; }
 
 
-html, body, div, p, h1, h2, h3, ul, ol {
+html, body, div, p, pre, h1, h2, h3, ul, ol {
   font-size: base-font-size
   margin: 0
   padding: 0
@@ -54,6 +54,10 @@ html, body, div, p, h1, h2, h3, ul, ol {
 
 p {
   font-size: base-font-size
+  line-height: base-line-height
+  margin-bottom: base-line-height
+}
+pre {
   line-height: base-line-height
   margin-bottom: base-line-height
 }
@@ -70,6 +74,9 @@ h1, h2, h3 {
 
   small { font-size: 60%; color: #888; line-height: 0; }
 }
+
+code { font-family: Monaco, Consolas, 'Courier New', monospace; font-size: 16px; background-color: #fafafa; display: inline-block; padding: 0 3px; }
+pre > code { display: block; padding: 0 7px; }
 
 h1 { font-size: ms(2); line-height: lh(@font-size); margin-bottom: 0 * base-line-height; margin-top: 1 * base-line-height; font-weight: normal; }
 h2 { font-size: ms(1); line-height: lh(@font-size); margin-bottom: base-line-height; }
@@ -108,7 +115,7 @@ h1 + p { margin-bottom: 1 * base-line-height; }
 }
 
 #about {
-  margin: (2 * base-line-height) 0
+  margin: (3 * base-line-height) 0 (2 * base-line-height)
   font-style: italic
   font-size: 16px
   border-top: 1px dotted #aaa
@@ -146,3 +153,5 @@ h1 + p { margin-bottom: 1 * base-line-height; }
     float: left
     width: 108px
     margin-left: - @width
+
+@import "codehilite.styl"
