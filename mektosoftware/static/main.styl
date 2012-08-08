@@ -1,6 +1,5 @@
 @import url('http://fonts.googleapis.com/css?family=Antic+Slab');
 
-@import "modular-scale.styl"
 @import "-prefix-free.styl"
 
 base-size = 18px
@@ -8,7 +7,7 @@ base-line-height = 32px
 base-color = #222
 
 ms(increment)
-  return golden-ratio(base-size, increment)
+  return base-size * (1.618 ** increment)
 
 lh(font-size)
   return ceil(font-size / base-line-height) * base-line-height
