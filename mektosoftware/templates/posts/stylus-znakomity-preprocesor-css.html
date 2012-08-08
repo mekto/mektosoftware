@@ -1,0 +1,211 @@
+{% set title = 'Stylus - znakomity preprocesor CSS' %}
+{% set published_on = '2012-08-08' %}
+
+{% filter markdown %}
+
+Zastanawiałeś się kiedyś nad wykorzystaniem takich narzędzi jak [Less](http://lesscss.org)
+czy [Sass](http://sass-lang.org)? Mnie osobiście nie było łatwo zdecydować się na któreś z nich.
+Każde z tych rozwiązanie ma swoje wady i zalety, dlatego wybór jednego z nich jest trudniejszy
+niż się początkowo wydaje. Najpierw korzystałem z Less'a, jednak miał kilka błędów i potrafił się wysypać
+w najmniej oczekiwanym miejscu. Jednocześnie składnia nie pozwala na bardziej zaawansowane operacje, nie
+ma nawet instrukcji warunkowych czy pętli. Sass natomiast jest bardziej dojżałym i rozbudowanym preprocesorem,
+jednak chociażby wykorzystywanie mixinów jest dość niewygodne. Pondato musisz podjąć decyzję,
+czy będziesz pisał w składni Sass czy Scss.
+
+Z tego też względu po kilku próbach z jednym i drugim preprocesorem chciałem po prostu pozostać
+przy zwykłym poczciwym CSS - brak potrzeby _kompilowania_ swoich styli jest jednak ogromną zaletą!
+
+Na szczęście jest jeszcze jedno mniej znane narzędzie z tej rodziny - [Stylus](). Łączy ono zelety
+preprocesorów wspomnianych wyżej, jednocześnie niwelując ich problemy.
+Szczerze trzeba przyznać, że to co twórcy Stylusa wymyślili ze składnią, to po prostu mistrzostwo świata
+- jest zarówno wygodna, prosta, jak i daje ogromne możliwości bez wprowadzania dodatkowych słów kluczowych,
+jak to jest robione w Scss.
+
+Oto opis kilku opcji, które moim zdaniem wyróżniają Stylusa na tle innych prepocesorów.
+
+1. Transparentne mixiny
+-----------------------
+
+Mixiny występują we wszystich wymienonych tutaj preprocesorach. Jednak rozwiązanie zawarte w Stylusie jest
+bezkonkurencyjne, pozwala bowiem na wywoływanie ich w taki sam sposób jak inne właściwości CSS.
+
+Najpierw zdefiniujmy mixin `border-radius`:
+
+    :::css
+    border-radius() {
+      -webkit-border-radius: arguments;
+      -moz-border-radius: arguments;
+      border-radius: arguments;
+    }
+
+I zastosujmy go:
+
+    :::css
+    button {
+      display: inline-block;
+      border-radius: 5px; /* <-- tu jest nasz mixin */
+    }
+
+W rezultacie wygenerowany zostanie taki oto kod:
+
+    :::css
+    button {
+      display: inline-block;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+    }
+
+Świetne, prawda?! Dla porównania zobaczmy, jak taki sam mixin wykorzystujemy w Scss i Less:
+
+    :::css
+    /* Scss */
+    button {
+      display: inline-block;
+      @include border-radius(5px);
+    }
+
+    /* Less */
+    button {
+      display: inline-block;
+      .border-radius(5px);
+    }
+
+Mixiny w Stylusie można również wywyływać jak funkcje, ale akurat w tym przypadku jest to mniej wygodne:
+
+    :::css
+    button {
+      display: inline-block;
+      border-radius(5px);
+    }
+
+Ok, to było niezłe, ale co powiesz na taki przykład:
+
+    :::css
+    body {
+      background: #fff linear-gradient(#fff, #eee);
+    }
+
+Który kompiluje się do postaci:
+
+    :::css
+    body {
+      background: #fff -webkit-linear-gradient(#fff, #eee);
+      background: #fff -moz-linear-gradient(#fff, #eee);
+      background: #fff linear-gradient(#fff, #eee);
+    }
+
+Rewelacja! `linear-gradient` jest tutaj mixinem. Jego definicja jest bardziej skomplikowana
+w stosunku do `border-radius` i nie będę jej tutaj przytaczał. Nie mniej jednak takie wykorzystanie
+jest jak najbardzie możliwe, wygodne i polecane. Pozwoli Ci to utrzymać kod schludnym i czytelnym.
+
+Pozbycie sie tych wszystkich nadmiarowych `-webkit-`, `-moz-`, `-o-` jest nie lada zaletą,
+jednak to nie jedyne zastosowanie transparentych mixinów. Dzięki nim możesz również nadawać
+nowe znaczenia istniejącym właściwościom CSS.  
+Na warsztat weźmy właściwość CSS2 `overflow`, która może przyjmować wartości
+`visible`, `hidden`, `scroll`, `auto` i `inherit`. Rozszerzmy ją o obsługę wartości `ellipsis`:
+
+    :::css
+    .description {
+      overflow: ellipsis;
+    }
+
+Oczywiście żadna przeglądarka nie zrozumie wartości `ellipsis`, ale nic nie szkodzi na przeszkodzie,
+aby nasz mixin przekształcił powyższy zapis na coś takiego:
+
+    :::css
+    .description {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+W Stylusie jest to naprawdę możliwe. W dodatku mixin realizujący takie przekształcenie jest
+wyjątkowo prosto zbudowany:
+
+    overflow()
+      if arguments[0] == ellipsis
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+      else
+        overflow: arguments
+
+Warto wspomnieć, że nie musisz powyższych mixinów pisać samodzielnie - wykorzystaj dodatek [nib - CSS3 extansions for Stylus](http://visionmedia.github.com/nib/). Znajdziesz tam wiele praktycznych
+przykładów zastosowania transparentnych mixinów.
+
+
+2. Opcjonalne elementy składni
+------------------------------
+
+W Stylusie klamry, średniki, dwukropki, przecinki są często opcjonalne. Dlatego
+przykład z `border-radius` możesz zapisać tak:
+
+    border-radius()
+      -webkit-border-radius: arguments
+      -moz-border-radius: arguments
+      border-radius: arguments
+
+    button
+      display: inline-block
+      border-radius: 5px
+
+A nawet tak:
+
+    border-radius()
+      -webkit-border-radius arguments
+      -moz-border-radius arguments
+      border-radius arguments
+
+    button
+      display inline-block
+      border-radius 5px
+
+To trochę jakby połączyć Sass i Scss. I ponownie... jest to niezwykle wygodne! W jednym pliku możesz
+mieszać składnie jak Ci się żywnie podoba. Jak popracujesz trochę ze Stylusem, to szybko wypracujesz
+sobie najlepszy dla siebie sposób zapisu.
+
+3. Możliwość nadawania nowych znaczeń i wartości instniejącym atrybutom CSS
+---------------------------------------------------------------------------
+
+Jeden przykład nadawania nowej funkcjonalności widzieliśmy już z `overflow`. Jednak Stylus pozwala
+na więcej:
+
+    :::css
+    red = #00f
+
+    p { color: red; }
+
+Może nie jest to zbytnio użyteczne, ale w fragmencie powyżej zmieniłem wartość zmiennej `red`,
+dlatego nasz paragraf będzie koloru niebieskiego, a nie czerwonego.
+
+Inny przykład - funkcja `rgba`. Standardowo funkcja według specyfikacji CSS3 przyjmuje argumenty
+w postaci `rgba(255, 255, 255 .5)`, czyli poszczególne wartości modelu RGB i jako ostatni
+parametr wartość alpha. Stylus rozszerza działanie tej funkcji i pozwala na zapisy takie jak
+`rgba(#fff, .5)`, `rgba(white, .5)`, czy chociażby `rgba(darken(dodgerblue, 10%), .5)`.
+
+Mamy tutaj naprawdę ogromne możliwości _usprawniania_ składni CSS. Jednak nie szalej - umiar
+i rozsądek jest jak najbardziej wskazany przy nadpisywaniu standardowych zachowań CSS.
+
+4. Wiersz poleceń
+-----------------
+
+Pliki z kodem Stylusa można wygodnie kompilować z wykorzystaniem konsoli i wiersza poleceń. Stylus
+w przeciwieństwie do Lessa w trybie `--watch` monitoruje pod względem zmian wszystkie pliki, także
+te, które importujemy wykorzystując `@import`. W Less był z tym problem - monitoruje tylko plik
+wskazany - jeśli zmienisz jakiś zewnętrzny plik, musiś ponownie uruchomić kompilator, aby
+uwzględnił zmiany.
+
+Podsumowanie
+------------
+
+Przedstawiłem tutaj jedynie te opcje, które moim zdaniem najbardziej wyróżniają Stylusa na tle
+innych preprocesorów CSS. Bądź pewien, że wszystko to, co występuje w Less i Sass/Scss jest
+dostępne w Stylusie i to często w ulepszonej formie. Jak już wspomniałem, ani Less, ani Sass
+nie przekonały mnie do siebie do takiego stopmnia, abym mógł porzucić pisanie w _czystym_ CSS
+na rzecz któregoś z tych preprocesorów. Zrobił to dopiero Stylus, który imponuje niezwykle
+przemyślaną składnią i ogromnymi możliwościami. Zdumiewa mnie zatem fakt, że jest on wciąż
+tak mało popularny. Sądzę jednak, że jest to jedynie kwestia czasu, aby stał się on liderem
+w dziedzinie preprocesorów CSS.
+
+{% endfilter %}
