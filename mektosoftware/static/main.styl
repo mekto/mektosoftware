@@ -18,10 +18,10 @@ lh(font-size)
 html
   font-size: 62.5%
 body
+  color: base-color
   font-family: Georgia, serif
   font-size: base-size
   line-height: base-line-height
-  color: base-color
   // background: url('http://twitter.github.com/bootstrap/assets/img/grid-18px-masked.png') repeat-x;
   // background-image: -webkit-linear-gradient(rgba(#eee,.2) 2px, transparent 2px), -webkit-linear-gradient(0, rgba(#eee,.1) 2px, transparent 2px), -webkit-linear-gradient(rgba(#eee,.3) 1px, transparent 1px), -webkit-linear-gradient(0, rgba(#eee,.3) 1px, transparent 1px)
   // background-size: 160px 160px, 160px 160px, 16px 16px, 16px 16px
@@ -41,9 +41,9 @@ a
   transition: background-color .15s ease-in
 
 time
-  font-style: italic
   color: #555
   font-size: 14px
+  font-style: italic
 
 p.back
   a
@@ -69,18 +69,20 @@ ul, ol
   margin-left: base-line-height
 h1, h2, h3
   small
-    font-size: 60%; color: #888; line-height: 0
-  text-rendering: optimizeLegibility
+    color: #888
+    font-size: 60%
+    line-height: 0
   margin-bottom: base-line-height
   margin-top: base-line-height
+  text-rendering: optimizeLegibility
 code
   pre > &
     display: block
     padding: 0 7px
+  display: inline-block
+  background-color: #fafafa
   font-family: Monaco, Consolas, 'Courier New', monospace
   font-size: 16px
-  background-color: #fafafa
-  display: inline-block
   padding: 0 3px
 
 h1
@@ -88,9 +90,9 @@ h1
     margin-bottom: 1 * base-line-height
   font-size: ms(2)
   line-height: lh(@font-size)
+  font-weight: normal
   margin-bottom: 0 * base-line-height
   margin-top: 1 * base-line-height
-  font-weight: normal
 h2
   font-size: ms(1)
   line-height: lh(@font-size)
@@ -105,37 +107,36 @@ h2
   span
     color: #333
   @extends .container
+  color: #aaa
   font-family: 'Courier New', courier, monospace
   font-size: ms(1)
   font-weight: normal
   line-height: lh(@font-size)
   margin-top: 1.5 * base-line-height
   text-align: center
-  color: #aaa
 
 #intro
   p:last-child
     margin-bottom: 0
   u
+    color: #888
     font-weight: normal
     text-decoration: none
-    font-weight: normal
-    color: #888
   @extends .container
-  margin-top: 1.5 * base-line-height
-  font-size: 16px
-  font-style: italic
-  padding: 18px
   border-top: 1px dotted #bbb
   border-bottom: @border-top
+  font-size: 16px
+  font-style: italic
+  margin-top: 1.5 * base-line-height
+  padding: 18px
 
 #about
   p:last-child
     margin-bottom: 0
-  margin: (3 * base-line-height) 0 (2 * base-line-height)
-  font-style: italic
-  font-size: 16px
   border-top: 1px dotted #aaa
+  font-size: 16px
+  font-style: italic
+  margin: (3 * base-line-height) 0 (2 * base-line-height)
   padding: 18px
 
 .avatar
@@ -143,10 +144,10 @@ h2
   border: 1px solid 000
   border-radius: 100px
   box-shadow: inset 0 0 5px 2px rgba(#000, .5)
-  height: 96px
-  width: 96px
   float: left;
+  height: 96px
   margin-right: base-line-height
+  width: 96px
 
 #post-list
   p
@@ -155,12 +156,12 @@ h2
   a
     border-bottom: 0 none
   small
-    font-size: 60%
     color: #999
+    font-size: 60%
     font-style: italic
     float: left
     width: 108px
-    margin-left: - @width
+    margin-left: (-@width)
   @extends .container
   margin: 1.5 * base-line-height auto
 
