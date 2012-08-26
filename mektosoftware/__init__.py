@@ -1,31 +1,9 @@
-#-*- coding: utf-8 -*-
 from datetime import datetime, date
-from urlparse import urlparse
 
 from flask import Flask, render_template, abort
-from markdown import markdown as markdown
 
 app = Flask(__name__)
 app.config.from_object(__name__ + '.config')
-
-
-@app.template_filter('markdown')
-def markdown_filter(s):
-    return markdown(s, extensions=['codehilite(guess_lang=False)'])
-
-@app.template_filter('parse_video_url')
-def parse_video_url_filter(url):
-    rv = dict(service=None, video_id=None)
-    url_data = urlparse(url)
-    if url_data.netloc.endswith('vimeo.com'):
-        rv['service'] = 'vimeo.com'
-        rv['video_id'] = url_data.path[1:]
-    return rv
-
-@app.template_filter('format_date')
-def format_date_filter(date):
-    months = [u'stycznia', u'lutego', u'marca', u'kwietnia', u'maja', u'czerwca', u'lipca', u'sierpnia', u'września', u'października', u'listopada', u'grudnia']
-    return '{0} {1} {2}'.format(date.day, months[date.month-1], date.year)
 
 
 class Post(object):
@@ -79,3 +57,6 @@ def index():
 def post(slug):
     post = posts.get_by_slug(slug) or abort(404)
     return render_template('post.html', **locals())
+
+
+from . import filters
