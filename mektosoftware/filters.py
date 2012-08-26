@@ -1,13 +1,29 @@
 #-*- coding: utf-8 -*-
-from markdown import markdown
 from urlparse import urlparse
+
+import misaka
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import HtmlFormatter
 
 from . import app
 
 
+class PygmentsRenderer(misaka.HtmlRenderer, misaka.SmartyPants):
+    def block_code(self, text, lang):
+        try:
+          lexer = get_lexer_by_name(lang, stripall=True)
+        except:
+          lexer = get_lexer_by_name('text')
+        formatter = HtmlFormatter(cssclass='highlight {0}'.format(lang or 'plain'))
+        return highlight(text, lexer, formatter)
+
+md = misaka.Markdown(PygmentsRenderer(), extensions=misaka.EXT_FENCED_CODE | misaka.EXT_NO_INTRA_EMPHASIS)
+
+
 @app.template_filter('markdown')
 def markdown_filter(s):
-    return markdown(s, extensions=['codehilite(guess_lang=False)'])
+    return md.render(s)
 
 @app.template_filter('parse_video_url')
 def parse_video_url_filter(url):
