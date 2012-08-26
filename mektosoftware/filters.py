@@ -15,7 +15,7 @@ class PygmentsRenderer(misaka.HtmlRenderer, misaka.SmartyPants):
           lexer = get_lexer_by_name(lang, stripall=True)
         except:
           lexer = get_lexer_by_name('text')
-        formatter = HtmlFormatter(cssclass='highlight {0}'.format(lang or 'plain'))
+        formatter = HtmlFormatter(cssclass='highlight {0}'.format(lexer.name.lower()))
         return highlight(text, lexer, formatter)
 
 md = misaka.Markdown(PygmentsRenderer(), extensions=misaka.EXT_FENCED_CODE | misaka.EXT_NO_INTRA_EMPHASIS)
