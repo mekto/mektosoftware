@@ -31,69 +31,76 @@ bezkonkurencyjne, pozwala bowiem na wywoływanie ich w taki sam sposób jak inne
 
 Najpierw zdefiniujmy mixin `border-radius`:
 
-    :::css
-    border-radius() {
-      -webkit-border-radius: arguments;
-      -moz-border-radius: arguments;
-      border-radius: arguments;
-    }
+```css
+border-radius() {
+  -webkit-border-radius: arguments;
+  -moz-border-radius: arguments;
+  border-radius: arguments;
+}
+```
 
 I zastosujmy go:
 
-    :::css
-    button {
-      display: inline-block;
-      border-radius: 5px; /* <-- tu jest nasz mixin */
-    }
+```css
+button {
+  display: inline-block;
+  border-radius: 5px; /* <-- tu jest nasz mixin */
+}
+```
 
 W rezultacie wygenerowany zostanie taki oto kod:
 
-    :::css
-    button {
-      display: inline-block;
-      -webkit-border-radius: 5px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-    }
+```css
+button {
+  display: inline-block;
+  -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+```
 
 Świetne, prawda?! Dla porównania zobaczmy, jak taki sam mixin wykorzystujemy w Scss i Less:
 
-    :::css
-    /* Scss */
-    button {
-      display: inline-block;
-      @include border-radius(5px);
-    }
+```css
+/* Scss */
+button {
+  display: inline-block;
+  @include border-radius(5px);
+}
 
-    /* Less */
-    button {
-      display: inline-block;
-      .border-radius(5px);
-    }
+/* Less */
+button {
+  display: inline-block;
+  .border-radius(5px);
+}
+```
 
 Mixiny w Stylusie można również wywyływać jak funkcje, ale akurat w tym przypadku jest to mniej wygodne:
 
-    :::css
-    button {
-      display: inline-block;
-      border-radius(5px);
-    }
+```css
+button {
+  display: inline-block;
+  border-radius(5px);
+}
+```
 
 Ok, to było niezłe, ale co powiesz na taki przykład:
 
-    :::css
-    body {
-      background: #fff linear-gradient(#fff, #eee);
-    }
+```css
+body {
+  background: #fff linear-gradient(#fff, #eee);
+}
+```
 
 Który kompiluje się do postaci:
 
-    :::css
-    body {
-      background: #fff -webkit-linear-gradient(#fff, #eee);
-      background: #fff -moz-linear-gradient(#fff, #eee);
-      background: #fff linear-gradient(#fff, #eee);
-    }
+```css
+body {
+  background: #fff -webkit-linear-gradient(#fff, #eee);
+  background: #fff -moz-linear-gradient(#fff, #eee);
+  background: #fff linear-gradient(#fff, #eee);
+}
+```
 
 Rewelacja! `linear-gradient` jest tutaj mixinem. Jego definicja jest bardziej skomplikowana
 w stosunku do `border-radius` i nie będę jej tutaj przytaczał. Nie mniej jednak takie wykorzystanie
@@ -105,31 +112,35 @@ nowe znaczenia istniejącym właściwościom CSS.
 Na warsztat weźmy właściwość CSS2 `overflow`, która może przyjmować wartości
 `visible`, `hidden`, `scroll`, `auto` i `inherit`. Rozszerzmy ją o obsługę wartości `ellipsis`:
 
-    :::css
-    .description {
-      overflow: ellipsis;
-    }
+```css
+.description {
+  overflow: ellipsis;
+}
+```
 
 Oczywiście żadna przeglądarka nie zrozumie wartości `ellipsis`, ale nic nie szkodzi na przeszkodzie,
 aby nasz mixin przekształcił powyższy zapis na coś takiego:
 
-    :::css
-    .description {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+```css
+.description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+```
 
 W Stylusie jest to naprawdę możliwe. W dodatku mixin realizujący takie przekształcenie jest
 wyjątkowo prosto zbudowany:
 
-    overflow()
-      if arguments[0] == ellipsis
-        white-space: nowrap
-        overflow: hidden
-        text-overflow: ellipsis
-      else
-        overflow: arguments
+```stylus
+overflow()
+  if arguments[0] == ellipsis
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+  else
+    overflow: arguments
+```
 
 Warto wspomnieć, że nie musisz powyższych mixinów pisać samodzielnie - wykorzystaj dodatek [nib - CSS3 extansions for Stylus](http://visionmedia.github.com/nib/). Znajdziesz tam wiele praktycznych
 przykładów zastosowania transparentnych mixinów.
@@ -141,25 +152,29 @@ przykładów zastosowania transparentnych mixinów.
 W Stylusie klamry, średniki, dwukropki, przecinki są często opcjonalne. Dlatego
 przykład z `border-radius` możesz zapisać tak:
 
-    border-radius()
-      -webkit-border-radius: arguments
-      -moz-border-radius: arguments
-      border-radius: arguments
+```stylus
+border-radius()
+  -webkit-border-radius: arguments
+  -moz-border-radius: arguments
+  border-radius: arguments
 
-    button
-      display: inline-block
-      border-radius: 5px
+button
+  display: inline-block
+  border-radius: 5px
+```
 
 A nawet tak:
 
-    border-radius()
-      -webkit-border-radius arguments
-      -moz-border-radius arguments
-      border-radius arguments
+```stylus
+border-radius()
+  -webkit-border-radius arguments
+  -moz-border-radius arguments
+  border-radius arguments
 
-    button
-      display inline-block
-      border-radius 5px
+button
+  display inline-block
+  border-radius 5px
+```
 
 To trochę jakby połączyć Sass i Scss. I ponownie... jest to niezwykle wygodne! W jednym pliku możesz
 mieszać składnie jak Ci się żywnie podoba. Jak popracujesz trochę ze Stylusem, to szybko wypracujesz
@@ -171,10 +186,11 @@ sobie najlepszy dla siebie sposób zapisu.
 Jeden przykład nadawania nowej funkcjonalności widzieliśmy już z `overflow`. Jednak Stylus pozwala
 na więcej:
 
-    :::css
-    red = #00f
+```css
+red = #00f
 
-    p { color: red; }
+p { color: red; }
+```
 
 Może nie jest to zbytnio użyteczne, ale w fragmencie powyżej zmieniłem wartość zmiennej `red`,
 dlatego nasz paragraf będzie koloru niebieskiego, a nie czerwonego.
