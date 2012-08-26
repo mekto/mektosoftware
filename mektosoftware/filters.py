@@ -25,14 +25,6 @@ md = misaka.Markdown(PygmentsRenderer(), extensions=misaka.EXT_FENCED_CODE | mis
 def markdown_filter(s):
     return md.render(s)
 
-@app.template_filter('parse_video_url')
-def parse_video_url_filter(url):
-    rv = dict(service=None, video_id=None)
-    url_data = urlparse(url)
-    if url_data.netloc.endswith('vimeo.com'):
-        rv['service'] = 'vimeo.com'
-        rv['video_id'] = url_data.path[1:]
-    return rv
 
 @app.template_filter('format_date')
 def format_date_filter(date):
