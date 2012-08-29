@@ -4,8 +4,6 @@ from .manager import PostManager
 
 
 app = Flask(__name__)
-app.config.from_object(__name__ + '.config')
-
 posts = PostManager(app)
 
 app.before_first_request(posts.find_posts)
