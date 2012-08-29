@@ -20,7 +20,7 @@ from . import filters
 def index():
     return render_template('index.html', posts=posts)
 
-@app.route('/blog/<slug>')
+@app.route('/blog/<slug>.html')
 def post(slug):
     post = posts.get_by_slug(slug) or abort(404)
     return render_template('post.html', **locals())
