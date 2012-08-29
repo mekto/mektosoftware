@@ -5,17 +5,14 @@ from mektosoftware import app
 
 manager = Manager(app)
 
-@manager.command
-def freeze():
+@manager.option('-t', '--test', action='store_true', dest='test', default=False, help='start an HTTP server to test the build result')
+def freeze(test):
     """ Freezes application into a set of static files. """
     freezer = Freezer(app)
-    freezer.freeze()
-
-@manager.command
-def freeze_test():
-    """ Freezes application and starts an HTTP server to test the build result. """
-    freezer = Freezer(app)
-    freezer.run()
+    if test:
+        freezer.run()
+    else:
+        freezer.freeze()
 
 if __name__ == '__main__':
     manager.run()
