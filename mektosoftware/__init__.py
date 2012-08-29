@@ -1,6 +1,6 @@
 from flask import Flask, render_template, abort
 
-from .manager import PostManager
+from .postmanager import PostManager
 
 
 app = Flask(__name__)
